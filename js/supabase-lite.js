@@ -115,7 +115,8 @@
   /* auto-configure from js/config.js */
   var cfg = window.WARBLERS_CONFIG || {};
   if (cfg.SUPABASE_URL && cfg.SUPABASE_ANON_KEY) {
-    URL = String(cfg.SUPABASE_URL).replace(/\/+$/, "");
+    // accept the bare project URL or a pasted /rest/v1 or /auth/v1 endpoint
+    URL = String(cfg.SUPABASE_URL).replace(/\/(rest|auth)\/v1\/?$/, "").replace(/\/+$/, "");
     KEY = String(cfg.SUPABASE_ANON_KEY);
   }
 })();

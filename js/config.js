@@ -12,6 +12,6 @@
    Never put the service_role key anywhere in this repo.
    ============================================================ */
 window.WARBLERS_CONFIG = {
-  SUPABASE_URL: "",
-  SUPABASE_ANON_KEY: ""
+  SUPABASE_URL: "https://xvrxnnearziebfvklaof.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_sJa5ac-lLIUzJWXQQtacdA_LXIMuqEX"
 };
