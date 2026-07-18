@@ -71,12 +71,14 @@
   function rest(path, opts, asAdmin) {
     opts = opts || {};
     function run() {
-      var bearer = asAdmin && session() ? session().access_token : KEY;
-      var headers = {
-        "apikey": KEY,
-        "Authorization": "Bearer " + bearer,
-        "Content-Type": "application/json"
-      };
+      var headers = { "apikey": KEY, "Content-Type": "application/json" };
+      if (asAdmin && session()) {
+        headers["Authorization"] = "Bearer " + session().access_token;
+      } else if (KEY.indexOf("eyJ") === 0) {
+        // legacy JWT anon keys also ride in the Authorization header;
+        // new sb_publishable_* keys must NOT — the apikey header suffices
+        headers["Authorization"] = "Bearer " + KEY;
+      }
       var k; for (k in (opts.headers || {})) headers[k] = opts.headers[k];
       return fetch(URL + "/rest/v1/" + path, {
         method: opts.method || "GET",
