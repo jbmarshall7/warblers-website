@@ -1,0 +1,20 @@
+# ============================================================
+# Netlify security headers (applies on the Netlify-served site;
+# GitHub Pages ignores this file). Edit and push to update.
+#
+# CSP notes:
+#  - script-src 'self'      → only our own JS files run; injected/foreign
+#                             scripts are blocked (site has no inline <script>)
+#  - style-src 'unsafe-inline' → the site uses inline style="" attributes;
+#                             styles can't execute code, so this is low-risk
+#  - fonts.googleapis/gstatic → the Fraunces/Inter/Caveat webfonts
+#  - *.supabase.co (https+wss) → pre-allowed for the upcoming admin/backend
+#  - img-src data:          → the CSS bee/honeycomb art + canvas thumbnails
+# ============================================================
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Strict-Transport-Security: max-age=31536000
