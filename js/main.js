@@ -749,6 +749,33 @@
     kick();
   }
 
+  /* ============================================================
+     APPEARANCES (Find Us + Events) — markets & faires
+     Renders window.WARBLERS_APPEARANCES into #appearances-list.
+     Empty list -> warm coming-soon card. Data lives in js/data.js.
+     ============================================================ */
+  function renderAppearances() {
+    var wrap = $("#appearances-list");
+    if (!wrap) return;
+    var items = window.WARBLERS_APPEARANCES || [];
+    if (!items.length) {
+      wrap.innerHTML = '<div class="appearance-empty">' +
+        '<img src="assets/bird-logo.png" alt="" aria-hidden="true">' +
+        '<h3>Confirming our first pours now</h3>' +
+        '<p>We\u2019re lining up farmers markets and renaissance faires for the season. The moment a date is locked it lands here \u2014 mailing-list folks hear first.</p>' +
+        '</div>';
+      return;
+    }
+    wrap.innerHTML = items.map(function (a) {
+      var title = a.url ? '<a href="' + a.url + '">' + a.name + "</a>" : a.name;
+      return '<article class="appearance-card">' +
+        '<div class="appearance-when">' + a.date + (a.time ? " \u00b7 " + a.time : "") + "</div>" +
+        "<h3>" + title + "</h3>" +
+        "<p>" + (a.place || "") + (a.note ? " \u2014 " + a.note : "") + "</p>" +
+      "</article>";
+    }).join("");
+  }
+
   /* ---------- boot ---------- */
   document.addEventListener("DOMContentLoaded", function () {
     injectChrome();
@@ -761,6 +788,7 @@
     initCart();
     initCheckout();
     initForms();
+    renderAppearances();
     initQtyPickers();
     // set current year
     $$(".js-year").forEach(function (el) { el.textContent = new Date().getFullYear(); });

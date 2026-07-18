@@ -87,14 +87,18 @@ window.WARBLERS_MERCH = [
   { id: "m-sticker", name: "Warbler Sticker Pack",   kind: "Accessory", character: "Five weatherproof songbird stickers.",        price: 8,  availability: "stock",   hue: "#8C9C6A", image: "stickers.jpeg" }
 ];
 
+/* Upcoming appearances — farmers markets, renaissance faires, pop-ups.
+   Rendered on BOTH Find Us and Events. Add entries as they're confirmed:
+     { name: "Newtown Farmers Market", date: "Sat Aug 2", time: "9am\u20131pm",
+       place: "Fairfield Hills, Newtown CT", note: "Bottles + tastes", url: "" }
+   While the list is empty, both pages show a friendly "coming soon" card. */
+window.WARBLERS_APPEARANCES = [];
+
 /* ------------------------------------------------------------
    Allowed shipping states (spec §7).
-   INTENTIONALLY EMPTY. Do not guess a list — Warblers can only
-   ship to states it is licensed for, confirmed with a licensing
-   professional / state authority / TTB. Populate with the real
-   list (e.g. ["CA","OR","WA"]) once confirmed. While empty, the
-   checkout treats every state as "not yet served" and shows the
-   friendly fallback.
+   Owner-confirmed 2026-07-18: Warblers ships within CONNECTICUT
+   only, plus free local pickup in Newtown CT (chosen at checkout).
+   Extend this list only with confirmed licensing for each state.
    ------------------------------------------------------------ */
 window.WARBLERS_ALLOWED_STATES = ["CT","Connecticut"];
 

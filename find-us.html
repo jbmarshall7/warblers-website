@@ -49,63 +49,32 @@
       <div class="container">
         <p class="eyebrow">Where to find us</p>
         <h1>Find Warblers near you</h1>
-        <p class="lede">Pouring and selling around town, plus our own tasting room. Not on the list near you? <a href="contact.html">Ask us</a> — or tell your local bottle shop.</p>
+        <p class="lede">Our natural habitat is a market stall — farmers markets, renaissance faires, and pop-ups around Connecticut. We&rsquo;re booking our first season now.</p>
       </div>
     </div>
 
+    <!-- ============ UPCOMING APPEARANCES (rendered from js/data.js) ============ -->
     <section class="section">
-      <div class="container split" style="align-items:flex-start">
-        <div class="map-frame">
-          <!-- Stylized placeholder map — swap for a real embedded map. -->
-          <svg viewBox="0 0 600 380" preserveAspectRatio="xMidYMid slice" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-            <rect width="600" height="380" fill="#F4E9D4"/>
-            <path d="M0 250 q150 -40 300 0 t300 0V380H0z" fill="#F6C868" opacity="0.4"/>
-            <g stroke="#E4D6BC" stroke-width="2" fill="none">
-              <path d="M60 0V380M180 0V380M320 0V380M460 0V380"/>
-              <path d="M0 90H600M0 200H600M0 300H600"/>
-            </g>
-            <path d="M60 200 H320 V90" stroke="#C97E1E" stroke-width="5" fill="none" opacity="0.6"/>
-          </svg>
-          <span class="map-pin" style="left:53%;top:53%">
-            <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M12 22s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z" fill="currentColor"/><circle cx="12" cy="10" r="2.6" fill="#FBF5E9"/></svg>
-          </span>
-        </div>
-        <div class="stack">
-          <p class="eyebrow">Tasting room</p>
-          <h2>Come sip with us</h2>
-          <div class="ph-note"><strong>Placeholder location &amp; hours.</strong> Replace with the real tasting-room address and hours — or remove this section if there’s no public space yet (spec §9).</div>
-          <p class="stack"><span class="ph">[Tasting room address]</span><br><span class="ph">[City, State ZIP]</span></p>
-          <div class="hours-card">
-            <h3 style="margin-top:0">Hours</h3>
-            <dl>
-              <dt>Thu–Fri</dt><dd><span class="ph">4–9pm</span></dd>
-              <dt>Saturday</dt><dd><span class="ph">12–9pm</span></dd>
-              <dt>Sunday</dt><dd><span class="ph">12–6pm</span></dd>
-              <dt>Mon–Wed</dt><dd>Closed</dd>
-            </dl>
-          </div>
-          <p><a class="btn btn--ghost" href="contact.html">Get directions / ask us</a></p>
-        </div>
+      <div class="container">
+        <h2>Where we&rsquo;ll pour next</h2>
+        <div class="appearances" id="appearances-list"><!-- rendered by js/main.js --></div>
       </div>
     </section>
 
+    <!-- ============ MEANWHILE ============ -->
     <section class="section section--tint">
-      <div class="container">
-        <div class="center" style="margin-bottom:2rem">
-          <p class="eyebrow">Stockists</p>
-          <h2>Bars, restaurants &amp; bottle shops</h2>
-          <p class="lede">Spots that pour or sell Warblers mead.</p>
+      <div class="container split" style="align-items:flex-start">
+        <div class="stack">
+          <p class="eyebrow">Can&rsquo;t wait?</p>
+          <h2>The mead doesn&rsquo;t wait for market day</h2>
+          <p>Order online any time — we ship anywhere in <strong>Connecticut</strong>, or choose <strong>free local pickup in Newtown</strong> at checkout and we&rsquo;ll arrange a time by email.</p>
+          <p><a class="btn" href="shop.html">Shop the mead</a></p>
         </div>
-        <div class="ph-note"><strong>Placeholder stockists.</strong> These are examples — list real partners here as they come on board.</div>
-        <ul class="stockist-list">
-          <li class="stockist"><div><div class="s-name"><span class="ph">[Bottle shop name]</span></div><div class="s-meta"><span class="ph">Neighborhood · City</span></div></div><span class="s-tag">Bottles</span></li>
-          <li class="stockist"><div><div class="s-name"><span class="ph">[Restaurant name]</span></div><div class="s-meta"><span class="ph">Neighborhood · City</span></div></div><span class="s-tag">On draft</span></li>
-          <li class="stockist"><div><div class="s-name"><span class="ph">[Bar name]</span></div><div class="s-meta"><span class="ph">Neighborhood · City</span></div></div><span class="s-tag">By the glass</span></li>
-          <li class="stockist"><div><div class="s-name"><span class="ph">[Market / co-op name]</span></div><div class="s-meta"><span class="ph">Neighborhood · City</span></div></div><span class="s-tag">Bottles</span></li>
-        </ul>
-        <div class="center" style="margin-top:2.5rem">
-          <p style="color:var(--ink-soft)">Run a shop or bar and want to carry Warblers?</p>
-          <a class="btn btn--honey" href="contact.html">Stock our mead</a>
+        <div class="form-card">
+          <h3 style="margin-top:0">Run a market or faire?</h3>
+          <p style="color:var(--ink-soft);font-size:0.95rem">We&rsquo;d love to bring the flock. Organizers and event folk — tell us about your dates and we&rsquo;ll get back quickly.</p>
+          <a class="btn btn--block" href="contact.html">Get in touch</a>
+          <p class="hint" style="margin-top:0.75rem">First pours are announced to the mailing list before anywhere else — the signup lives in the footer.</p>
         </div>
       </div>
     </section>

@@ -809,3 +809,19 @@ p { margin: 0 0 1rem; }
   .mural-frame { padding: clamp(10px, 3vw, 16px); }
   .mural-reserved-label { font-size: 0.48rem; letter-spacing: 0.05em; }
 }
+
+/* ============================================================
+   Appearances — markets & faires (find-us.html, events.html)
+   ============================================================ */
+.appearances { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.appearance-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.4rem 1.5rem; }
+.appearance-when {
+  font-family: var(--sans); font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; font-size: 0.75rem; color: var(--honey-deep); margin-bottom: 0.4rem;
+}
+.appearance-empty {
+  grid-column: 1 / -1; text-align: center; padding: 2.75rem 1.25rem;
+  background: var(--white); border: 1.5px dashed var(--line); border-radius: var(--radius);
+}
+.appearance-empty img { width: 72px; height: auto; margin: 0 auto 0.75rem; }
+.appearance-empty p { color: var(--ink-soft); max-width: 46ch; margin: 0 auto; }
