@@ -53,6 +53,15 @@
   var LIMIT_MSG = "That's " + MAX_PER_VISITOR + " patches from one songbird — leave a little wall for the rest of the flock. One frees up if yours is taken down.";
   var FALLBACK_HINT = "Drag anywhere on the wall to claim your patch.";
 
+  /* ---------- backend mode ----------
+     With Supabase configured (js/config.js) the wall is SHARED: approved
+     patches come from the database, submissions go to it, and moderation
+     moves to the real signed-in admin at /admin.html. Without config,
+     everything below falls back to the original localStorage demo. */
+  var REMOTE = !!(window.SupaLite && window.SupaLite.configured());
+  var PENDING_KEY  = "warblers_mural_my_pending_v1";  // local echo of my in-review patches
+  var REPORTED_KEY = "warblers_mural_reported_v1";    // patches I've already reported
+
   /* small inline flag icon for the report button (static — never user data) */
   var FLAG_SVG = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true">' +
     '<path d="M6 21V4M6 4h11l-2 4 2 4H6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -96,7 +105,7 @@
          art, text, name, flagged, ts, visitor } ] }   // cells 0-based
      Rejected/removed regions are dropped from the array outright.
      ============================================================ */
-  var MuralStore = (function () {
+  var DemoStore = (function () {
     var data = null; // in-memory cache; the localStorage copy is the record of truth
 
     function blank() { return { version: 1, seeded: false, regions: [] }; }
@@ -154,6 +163,88 @@
       }
     };
   })();
+
+  /* ============================================================
+     RemoteStore — the SHARED wall (Supabase). Same interface as
+     DemoStore. Approved patches load from the database (already in
+     z-order); the visitor's own pending patches are echoed from
+     localStorage so they can see "in review" (anonymous visitors
+     can't read pending rows — the server forbids it). Moderation
+     methods are no-ops here: that power lives at /admin.html with
+     a real sign-in, enforced by row-level security.
+     ============================================================ */
+  function fromServer(r) {
+    return { id: r.id, status: r.status, col: r.x, row: r.y, w: r.w, h: r.h,
+             art: r.art, text: r.text || "", name: r.name || "", flagged: false,
+             ts: Date.parse(r.created_at) || Date.now(), visitor: r.visitor };
+  }
+  function toServer(r) {
+    return { status: "pending", x: r.col, y: r.row, w: r.w, h: r.h,
+             art: r.art, text: r.text, name: r.name, visitor: r.visitor };
+  }
+  function myPending() {
+    try {
+      var a = JSON.parse(localStorage.getItem(PENDING_KEY));
+      if (Array.isArray(a)) {
+        // drop stale echoes (rejected long ago, or approved and replaced)
+        var fresh = a.filter(function (p) { return Date.now() - p.ts < 14 * 864e5; });
+        return fresh;
+      }
+    } catch (e) {}
+    return [];
+  }
+  function savePending(a) { try { localStorage.setItem(PENDING_KEY, JSON.stringify(a)); } catch (e) {} }
+
+  var RemoteStore = {
+    _cache: { regions: [] },
+    all: function () { return this._cache; },
+    refresh: function () {
+      var self = this;
+      return SupaLite.select("mural_regions?select=*&status=eq.approved&order=z.asc&order=created_at.asc")
+        .then(function (rows) {
+          var approved = (rows || []).map(fromServer);
+          // my pending echoes vanish once a matching patch is approved
+          var pend = myPending().filter(function (p) {
+            return !approved.some(function (a) {
+              return a.col === p.col && a.row === p.row && a.w === p.w && a.h === p.h;
+            });
+          });
+          savePending(pend);
+          self._cache.regions = approved.concat(pend);
+        });
+    },
+    submit: function (region) {
+      savePending(myPending().concat([region]));
+      this._cache.regions.push(region);
+      SupaLite.insert("mural_regions", toServer(region))["catch"](function () {
+        hint("Couldn't reach the wall just now — your patch is saved on this device; try again later.");
+      });
+      return this._cache;
+    },
+    flag: function (id) {
+      SupaLite.insert("mural_flags", { region_id: id })["catch"](function () {});
+      return this._cache;
+    },
+    /* moderation happens at /admin.html in shared mode */
+    approve: function () { return this._cache; },
+    reject: function () { return this._cache; },
+    remove: function () { return this._cache; },
+    reorder: function () { return this._cache; }
+  };
+
+  var MuralStore = REMOTE ? RemoteStore : DemoStore;
+
+  /* remember which patches this visitor already reported (cosmetic) */
+  function wasReported(id) {
+    try { return (JSON.parse(localStorage.getItem(REPORTED_KEY)) || []).indexOf(id) !== -1; } catch (e) { return false; }
+  }
+  function rememberReported(id) {
+    try {
+      var a = JSON.parse(localStorage.getItem(REPORTED_KEY)) || [];
+      if (a.indexOf(id) === -1) a.push(id);
+      localStorage.setItem(REPORTED_KEY, JSON.stringify(a));
+    } catch (e) {}
+  }
 
   /* ---------- occupancy helpers ----------
      Overlap is ALLOWED on the wall (patches layer). areaFree() is only used
@@ -292,10 +383,11 @@
     btn.type = "button";
     btn.setAttribute("aria-label", "Report this patch");
     btn.innerHTML = FLAG_SVG;
-    if (r.flagged) { btn.setAttribute("aria-label", "Reported — thank you"); btn.disabled = true; }
+    if (r.flagged || wasReported(r.id)) { btn.setAttribute("aria-label", "Reported — thank you"); btn.disabled = true; }
     btn.addEventListener("click", function (e) {
       e.stopPropagation();
       MuralStore.flag(r.id);
+      rememberReported(r.id);
       btn.setAttribute("aria-label", "Reported — thank you");
       btn.disabled = true;
     });
@@ -713,7 +805,20 @@
     var pick = $("#mural-pick-free");
     if (pick) pick.addEventListener("click", pickFree);
 
-    renderBoard();
+    if (REMOTE) {
+      // shared wall: server data, real admin at /admin.html — no demo admin here
+      isAdmin = false;
+      var note = $("#mural-mode-note");
+      if (note) note.innerHTML = "<strong>Shared wall.</strong> Everyone sees the same mural — " +
+        "your patch appears for the whole flock once it&rsquo;s approved. " +
+        'Admins sign in at <a href="admin.html">the admin page</a>.';
+      renderBoard(); // paint my local echoes immediately…
+      RemoteStore.refresh().then(renderBoard)["catch"](function () {
+        hint("Couldn't load the wall just now — check back in a moment.");
+      });
+    } else {
+      renderBoard();
+    }
 
     if (isAdmin) {
       var adm = $("#mural-admin");

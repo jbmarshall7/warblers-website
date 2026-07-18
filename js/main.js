@@ -345,6 +345,30 @@
       var hp = $("#contact-company");
       if (hp && hp.value) { return; } // bot filled hidden field
       if (!contact.checkValidity()) { contact.reportValidity(); return; }
+
+      // With Supabase configured, messages go to the real inbox (admin.html).
+      // Server-side rules only allow inserting — visitors can never read them.
+      if (window.SupaLite && SupaLite.configured()) {
+        var btn = contact.querySelector("button[type=submit]");
+        if (btn) btn.disabled = true;
+        SupaLite.insert("contact_messages", {
+          name: contact.querySelector("#c-name").value.trim(),
+          email: contact.querySelector("#c-email").value.trim(),
+          reason: contact.querySelector("#c-reason").value || "General question",
+          message: contact.querySelector("#c-message").value.trim()
+        }).then(function () {
+          if (btn) btn.disabled = false;
+          status.className = "form-status ok show";
+          status.textContent = "Thanks for reaching out — your message is in our inbox. We’ll get back to you within 2–3 business days.";
+          contact.reset();
+        })["catch"](function () {
+          if (btn) btn.disabled = false;
+          status.className = "form-status err show";
+          status.textContent = "Something went wrong sending that — please try again, or email us directly.";
+        });
+        return;
+      }
+
       status.className = "form-status ok show";
       status.textContent = "Thanks for reaching out — we’ll get back to you within 2–3 business days. (Demo: connect a form backend to receive messages.)";
       contact.reset();

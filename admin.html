@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Warblers Meadery</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="Warblers Meadery home">
+        <img class="brand-bird" src="assets/bird-logo.png" alt="" aria-hidden="true" width="309" height="232">
+        <img class="brand-wordmark" src="assets/wordmark-color.png" alt="Warblers Meadery" width="1346" height="661">
+      </a>
+      <span class="eyebrow" style="margin:0">Admin</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- shown when js/config.js has no Supabase values yet -->
+    <section class="section" id="admin-unconfigured" hidden>
+      <div class="container" style="max-width:640px">
+        <h1>Admin isn&rsquo;t connected yet</h1>
+        <div class="ph-note">
+          <strong>No backend configured.</strong> The admin requires the Supabase project so that
+          sign-in and moderation are enforced server-side (there is deliberately no client-only login).
+          Finish the checklist: create the Supabase project, run <code>supabase/schema.sql</code>,
+          disable sign-ups, add your admin user — then paste the Project URL and anon key into
+          <code>js/config.js</code> and publish.
+        </div>
+        <p><a class="btn btn--ghost" href="index.html">Back to the site</a></p>
+      </div>
+    </section>
+
+    <!-- sign-in -->
+    <section class="section" id="admin-login" hidden>
+      <div class="container" style="max-width:460px">
+        <div class="form-card">
+          <h1 style="font-size:1.8rem">Sign in</h1>
+          <p style="color:var(--ink-soft);font-size:0.95rem">Warblers Meadery admin — guestbook moderation and messages.</p>
+          <form id="admin-login-form" novalidate>
+            <div class="field">
+              <label for="adm-email">Email</label>
+              <input id="adm-email" type="email" required autocomplete="username">
+            </div>
+            <div class="field">
+              <label for="adm-pass">Password</label>
+              <input id="adm-pass" type="password" required autocomplete="current-password">
+            </div>
+            <button class="btn btn--block" type="submit" id="adm-signin">Sign in</button>
+            <div class="form-status" id="adm-login-status"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- the admin app (after sign-in) -->
+    <section class="section" id="admin-app" hidden>
+      <div class="container">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2rem">
+          <h1 style="margin:0;font-size:2rem">Guestbook &amp; messages</h1>
+          <div style="display:flex;align-items:center;gap:0.75rem">
+            <span id="adm-user" style="color:var(--ink-soft);font-size:0.9rem"></span>
+            <button class="btn btn--ghost mural-tool-btn" id="adm-refresh" type="button">Refresh</button>
+            <button class="btn btn--ghost mural-tool-btn" id="adm-signout" type="button">Sign out</button>
+          </div>
+        </div>
+        <div class="form-status" id="adm-status"></div>
+
+        <h2>Pending patches</h2>
+        <div class="grid grid--3" id="adm-pending"><!-- rendered --></div>
+
+        <h2 style="margin-top:2.5rem">On the wall</h2>
+        <p class="hint">Layering: patches overlap like posters — “Bring forward” puts a patch on top, “Send back” tucks it underneath.</p>
+        <div class="grid grid--3" id="adm-wall"><!-- rendered --></div>
+
+        <h2 style="margin-top:2.5rem">Contact messages</h2>
+        <div id="adm-messages"><!-- rendered --></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/supabase-lite.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

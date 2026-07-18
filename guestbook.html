@@ -56,7 +56,7 @@
     <!-- ============ THE MURAL ============ -->
     <section class="section">
       <div class="container">
-        <div class="ph-note"><strong>Demonstration mural.</strong> Patches are stored in this browser only (localStorage) — before launch, connect a small backend so every visitor shares one wall, and moderate there. Admins: open <code>guestbook.html?admin=1</code> on this device to review.</div>
+        <div class="ph-note" id="mural-mode-note"><strong>Demonstration mural.</strong> Patches are stored in this browser only (localStorage) — before launch, connect a small backend so every visitor shares one wall, and moderate there. Admins: open <code>guestbook.html?admin=1</code> on this device to review.</div>
         <div class="mural-frame">
           <div class="mural-board" id="mural-board" aria-label="Community mural — drag across free space to claim your patch"><!-- regions + selection rendered by js/mural.js --></div>
         </div>
@@ -168,6 +168,8 @@
     </div>
   </footer>
 
+  <script src="js/config.js"></script>
+  <script src="js/supabase-lite.js"></script>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
   <script src="js/mural.js"></script>
