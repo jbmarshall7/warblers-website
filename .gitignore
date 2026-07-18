@@ -1,0 +1,18 @@
+# macOS noise
+.DS_Store
+
+# Cloudflare tunnel binary — 37 MB tool, not site source (download separately)
+cloudflared
+
+# saved-webpage scraps from the browser (not used by the site)
+warblers-meadery-logo.htm
+warblers-meadery-logo_files/
+
+# Claude Code machine-local settings (launch.json IS shared)
+.claude/settings.local.json
+
+# internal working docs — kept local, not published
+SKILL.md
+website-specification.md
+compliance-checklist.md
+warblers-meadery-site.skill

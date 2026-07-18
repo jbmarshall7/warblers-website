@@ -1,0 +1,800 @@
+/* ============================================================
+   Warblers Meadery — Design System
+   Small-batch meadery. Warm honey/amber + a bright warbler
+   accent. Serif display for song/craft, humanist sans for body.
+   All brand values here are the spec's *proposed* direction
+   (spec §3) and can be tuned once a real logo/palette exists.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap');
+
+:root {
+  /* ---- Palette (from Label_MVP.png) ----
+     Forest-green + cream + honey-gold, with a bright flower-yellow pop. */
+  --forest:       #2E3D20;  /* dominant brand green (dark sections, footer, hero) */
+  --forest-deep:  #1F2A15;  /* deepest green */
+  --moss:         #4C5E2E;  /* mid-green glow */
+  --sage:         #8C9C6A;  /* muted sage — warbler backs, illustrations */
+
+  --honey:        #E0A63A;  /* honey-gold — warbler bellies, primary accent/CTA */
+  --honey-deep:   #C0851F;  /* deeper gold */
+  --amber-glow:   #F2C230;  /* bright flower yellow — small highlights */
+
+  --cream:        #F5EFDD;  /* warm parchment — page background */
+  --cream-2:      #EAE0C6;  /* alt sections */
+  --line:         #E1D6B8;  /* hairlines */
+
+  --warbler:      #6E8039;  /* olive/sage-green accent (in-stock, focus, links) */
+  --warbler-deep: #55632B;
+
+  --ink:          #29301E;  /* body text — deep green-charcoal */
+  --ink-soft:     #5A5A42;
+  --white:        #FFFFFF;
+  --danger:       #B4472B;
+
+  /* Type */
+  --script: "Caveat", "Segoe Script", cursive;
+  --serif: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --sans:  "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Rhythm */
+  --maxw: 1160px;
+  --gap: clamp(1rem, 3vw, 2rem);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 10px 30px -12px rgba(43, 38, 32, 0.28);
+  --shadow-soft: 0 4px 16px -8px rgba(43, 38, 32, 0.25);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Reset-ish ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--cream);
+  line-height: 1.65;
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.075rem);
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--honey-deep); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 500; line-height: 1.1; color: var(--ink); margin: 0 0 0.5em; }
+h1 { font-size: clamp(2.4rem, 1.6rem + 3.4vw, 4rem); letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.8rem, 1.3rem + 2vw, 2.7rem); }
+h3 { font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.6rem); }
+p { margin: 0 0 1rem; }
+:focus-visible { outline: 3px solid var(--warbler-deep); outline-offset: 2px; border-radius: 4px; }
+
+/* ---------- Layout helpers ---------- */
+.container { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gap); }
+.section { padding-block: clamp(3rem, 6vw, 6rem); }
+.section--tint { background: var(--cream-2); }
+.section--ink { background: var(--forest); color: var(--cream); }
+.section--ink h2, .section--ink h3 { color: var(--cream); }
+.eyebrow {
+  font-family: var(--sans); font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; font-size: 0.78rem; color: var(--honey-deep);
+  margin: 0 0 0.75rem; display: flex; align-items: center; gap: 0.55rem;
+}
+.eyebrow::before { content: ""; width: 26px; height: 1px; background: currentColor; opacity: 0.6; }
+.lede { font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem); color: var(--ink-soft); max-width: 60ch; }
+.center { text-align: center; }
+.center .eyebrow { justify-content: center; }
+.center .lede { margin-inline: auto; }
+.stack > * + * { margin-top: 1rem; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  --btn-bg: var(--honey); --btn-fg: var(--forest-deep);
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--sans); font-weight: 600; font-size: 0.98rem;
+  padding: 0.85em 1.5em; border-radius: 100px; border: 1.5px solid transparent;
+  background: var(--btn-bg); color: var(--btn-fg); cursor: pointer;
+  text-decoration: none; transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.2s;
+  box-shadow: var(--shadow-soft);
+}
+.btn:hover { transform: translateY(-2px); box-shadow: var(--shadow); background: var(--honey-deep); color: var(--cream); }
+.btn:active { transform: translateY(0); }
+.btn--ghost { background: transparent; box-shadow: none; border-color: var(--forest); color: var(--forest); }
+.btn--ghost:hover { background: rgba(46,61,32,0.08); border-color: var(--forest); color: var(--forest); }
+.btn--honey { background: var(--honey); color: var(--forest-deep); }
+.btn--honey:hover { background: var(--honey-deep); color: var(--cream); }
+.btn--forest { background: var(--forest); color: var(--cream); }
+.btn--forest:hover { background: var(--forest-deep); color: var(--cream); }
+.btn--on-ink { color: var(--forest-deep); }
+/* On dark/forest backgrounds */
+.btn--on-dark { background: transparent; box-shadow: none; border-color: rgba(245,239,221,0.55); color: var(--cream); }
+.btn--on-dark:hover { background: rgba(245,239,221,0.12); border-color: var(--cream); color: var(--cream); }
+.btn--block { width: 100%; justify-content: center; }
+.btn[disabled] { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* ============================================================
+   Header / nav
+   ============================================================ */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(251, 245, 233, 0.88);
+  backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; min-height: 72px;
+}
+.brand { display: inline-flex; align-items: center; gap: 0.55rem; text-decoration: none; color: var(--forest); }
+.brand svg { width: 32px; height: 32px; flex: none; align-self: center; }
+.brand-bird { height: 42px; width: auto; flex: none; }
+.site-footer .brand-bird { height: 44px; }
+.brand-wordmark { height: 40px; width: auto; flex: none; }
+.brand strong { font-family: var(--script); font-weight: 700; text-transform: lowercase; font-size: 1.7rem; line-height: 1; letter-spacing: 0.5px; }
+.brand span { font-family: var(--sans); text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.66rem; font-weight: 700; color: var(--honey-deep); }
+/* Footer brand: whole lockup in script on the dark footer */
+.site-footer .brand strong { font-size: 1.6rem; }
+.nav-links { display: flex; align-items: center; gap: 0.4rem; list-style: none; margin: 0; padding: 0; }
+.nav-links a {
+  text-decoration: none; color: var(--ink); font-weight: 500; font-size: 0.98rem;
+  padding: 0.5rem 0.85rem; border-radius: 100px; transition: background 0.2s, color 0.2s;
+}
+.nav-links a:hover { background: var(--cream-2); }
+.nav-links a[aria-current="page"] { color: var(--honey-deep); }
+.nav-links .nav-cta a { background: var(--honey); color: var(--forest-deep); font-weight: 600; }
+.nav-links .nav-cta a:hover { background: var(--honey-deep); color: var(--cream); }
+.nav-cart { position: relative; }
+.cart-count {
+  position: absolute; top: -6px; right: -6px; background: var(--honey-deep); color: var(--cream);
+  font-size: 0.7rem; font-weight: 700; min-width: 18px; height: 18px; border-radius: 100px;
+  display: grid; place-items: center; padding: 0 4px;
+}
+.cart-count[data-count="0"] { display: none; }
+.nav-toggle {
+  display: none; background: none; border: 1.5px solid var(--line); border-radius: 10px;
+  width: 44px; height: 44px; cursor: pointer; color: var(--ink);
+}
+.nav-toggle svg { margin: auto; }
+
+@media (max-width: 860px) {
+  .nav-toggle { display: grid; place-items: center; }
+  .nav-links {
+    position: absolute; inset: 72px 0 auto; flex-direction: column; align-items: stretch;
+    background: var(--cream); border-bottom: 1px solid var(--line); padding: 1rem var(--gap) 1.5rem;
+    gap: 0.25rem; transform: translateY(-12px); opacity: 0; pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s var(--ease); box-shadow: var(--shadow);
+  }
+  .nav-links.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .nav-links a { padding: 0.8rem 1rem; }
+  .nav-links .nav-cta a { text-align: center; }
+}
+
+/* ============================================================
+   Branded hero (Home) — label art on matching forest green
+   ============================================================ */
+.hero-brand {
+  background: radial-gradient(circle at 50% 32%, #3d4f27 0%, #2E3D20 48%, #1F2A15 100%);
+  color: var(--cream); text-align: center;
+  padding-block: clamp(2rem, 4vw, 3.5rem) clamp(2.5rem, 6vw, 5rem);
+}
+.hero-brand-inner { max-width: 780px; margin-inline: auto; }
+.hero-label-frame {
+  width: min(460px, 82%); margin: 0 auto 1.75rem;
+}
+.hero-label-frame img { width: 100%; height: auto; display: block; }
+.hero-tag {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(1.15rem, 1rem + 0.7vw, 1.5rem); line-height: 1.4;
+  color: rgba(245,239,221,0.92); max-width: 44ch; margin: 0 auto 1.9rem;
+}
+.hero-brand .hero-cta { justify-content: center; }
+.hero-note--on-dark { color: rgba(245,239,221,0.7); justify-content: center; }
+
+/* ------------------------------------------------------------
+   OPTIONAL animated hero background (Home only)
+   Choose the effect with data-hero-bg on <section class="hero-brand">:
+       "static"     → original forest-green gradient (default, no animation)
+       "motes"      → sparse honey/pollen dots drifting up
+       "honeycomb"  → slow-drifting honeycomb lattice
+       "bees"       → a few bees gently meandering
+   The static radial-gradient above always stays as the base layer + fallback.
+   Any non-"static" value shows the ambient honey glow + a legibility scrim,
+   plus the one effect you picked. Reduced-motion users always get static.
+   Tweak colours in the data: URIs / vars below and speeds via the vars.
+   ------------------------------------------------------------ */
+
+/* ---- shared setup for every animated mode (i.e. anything but "static") ---- */
+.hero-brand[data-hero-bg]:not([data-hero-bg="static"]) {
+  position: relative;
+  overflow: hidden;
+  /* --- tweakables --- */
+  --hero-glow:       rgba(224,166,58,0.18); /* honey glow tint / strength   */
+  --hero-glow-2:     rgba(242,194,48,0.14); /* flower-yellow highlight       */
+  --hero-glow-speed: 34s;                   /* glow breathing/drift duration */
+  --hero-mote:       rgba(242,194,48,0.55); /* pollen mote colour            */
+  --hero-mote-speed: 44s;                   /* mote upward-drift duration     */
+  --hero-hex-speed:  60s;                   /* honeycomb drift duration       */
+  --hero-hex-opacity: 0.7;                  /* honeycomb faintness (0–1)      */
+}
+
+/* Keep the logo / tagline / CTAs above the animation and fully readable. */
+.hero-brand[data-hero-bg]:not([data-hero-bg="static"]) > .hero-brand-inner { position: relative; z-index: 5; }
+
+/* The animation layer only exists in an animated mode; hidden/inert otherwise. */
+.hero-anim { display: none; }
+.hero-brand[data-hero-bg]:not([data-hero-bg="static"]) .hero-anim {
+  display: block; position: absolute; inset: 0;
+  z-index: 0; pointer-events: none; overflow: hidden;
+}
+
+/* Ambient honey glow — shown in ALL animated modes. Screen-blends soft light. */
+.hero-anim__glow {
+  position: absolute; inset: -15%; z-index: 1;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(38% 42% at 26% 22%, var(--hero-glow)   0%, transparent 60%),
+    radial-gradient(34% 40% at 78% 70%, var(--hero-glow-2) 0%, transparent 60%);
+  animation: heroGlow var(--hero-glow-speed) ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* Soft central scrim — shown in ALL animated modes so the white wordmark keeps
+   contrast even where the glow brightens the background. Not animated. */
+.hero-anim::after {
+  content: ""; position: absolute; inset: 0; z-index: 4;
+  background: radial-gradient(58% 52% at 50% 40%, rgba(15,22,10,0.45) 0%, transparent 72%);
+}
+
+/* --- the swappable effect layers: hidden unless their mode is active --- */
+.hero-anim__motes, .hero-anim__hex, .hero-fx-bees, .hero-fx-garden { display: none; z-index: 2; }
+
+/* EFFECT: motes — sparse honey/pollen dots. Field repeats every 300px, so a
+   300px upward translate loops seamlessly (extra inset covers the scroll). */
+.hero-brand[data-hero-bg="motes"] .hero-anim__motes { display: block; }
+.hero-anim__motes {
+  position: absolute; inset: -300px 0; opacity: 0.9;
+  background-image:
+    radial-gradient(circle at 18% 24%, var(--hero-mote)       0 1.4px, transparent 2.4px),
+    radial-gradient(circle at 63% 12%, rgba(245,239,221,0.40) 0 1.1px, transparent 2px),
+    radial-gradient(circle at 82% 46%, var(--hero-mote)       0 1.8px, transparent 2.8px),
+    radial-gradient(circle at 38% 68%, rgba(245,239,221,0.32) 0 1px,   transparent 2px),
+    radial-gradient(circle at 8%  86%, var(--hero-mote)       0 1.5px, transparent 2.5px);
+  background-size: 340px 300px, 260px 300px, 300px 300px, 220px 150px, 380px 300px;
+  animation: heroMotes var(--hero-mote-speed) linear infinite;
+  will-change: transform;
+}
+
+/* EFFECT: honeycomb — a faint hexagon lattice drifting slowly upward.
+   Tile is 76.21×132px; translating one full 132px tile loops seamlessly.
+   A radial mask on the (static) wrapper fades the lattice OUT of the centre
+   — behind the logo + text — and IN toward the edges, so it frames the
+   content instead of running through it. The honeycomb drifts on ::before so
+   the clear centre stays put while it animates. Widen/narrow the clear zone
+   by editing the mask stops; recolour via the stroke '%23F2C230' below. */
+.hero-brand[data-hero-bg="honeycomb"] .hero-anim__hex { display: block; }
+.hero-anim__hex {
+  position: absolute; inset: 0; overflow: hidden; opacity: var(--hero-hex-opacity);
+  -webkit-mask-image: radial-gradient(ellipse 74% 66% at 50% 45%, transparent 42%, rgba(0,0,0,0.85) 78%, #000 100%);
+          mask-image: radial-gradient(ellipse 74% 66% at 50% 45%, transparent 42%, rgba(0,0,0,0.85) 78%, #000 100%);
+}
+.hero-anim__hex::before {
+  content: ""; position: absolute; inset: -132px 0;
+  background: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='38.105'%20height='66.0'%20viewBox='0%200%2038.105%2066.0'%3E%3Cg%20fill='none'%20stroke='%23F2C230'%20stroke-width='1.1'%20stroke-opacity='0.5'%3E%3Cpath%20d='M-19.05,-55.0%20L0.0,-44.0%20L0.0,-22.0%20L-19.05,-11.0%20L-38.11,-22.0%20L-38.11,-44.0Z'/%3E%3Cpath%20d='M19.05,-55.0%20L38.11,-44.0%20L38.11,-22.0%20L19.05,-11.0%20L-0.0,-22.0%20L0.0,-44.0Z'/%3E%3Cpath%20d='M57.16,-55.0%20L76.21,-44.0%20L76.21,-22.0%20L57.16,-11.0%20L38.11,-22.0%20L38.11,-44.0Z'/%3E%3Cpath%20d='M-38.11,-22.0%20L-19.05,-11.0%20L-19.05,11.0%20L-38.11,22.0%20L-57.16,11.0%20L-57.16,-11.0Z'/%3E%3Cpath%20d='M0.0,-22.0%20L19.05,-11.0%20L19.05,11.0%20L0.0,22.0%20L-19.05,11.0%20L-19.05,-11.0Z'/%3E%3Cpath%20d='M38.11,-22.0%20L57.16,-11.0%20L57.16,11.0%20L38.11,22.0%20L19.05,11.0%20L19.05,-11.0Z'/%3E%3Cpath%20d='M-19.05,11.0%20L0.0,22.0%20L0.0,44.0%20L-19.05,55.0%20L-38.11,44.0%20L-38.11,22.0Z'/%3E%3Cpath%20d='M19.05,11.0%20L38.11,22.0%20L38.11,44.0%20L19.05,55.0%20L-0.0,44.0%20L0.0,22.0Z'/%3E%3Cpath%20d='M57.16,11.0%20L76.21,22.0%20L76.21,44.0%20L57.16,55.0%20L38.11,44.0%20L38.11,22.0Z'/%3E%3Cpath%20d='M-38.11,44.0%20L-19.05,55.0%20L-19.05,77.0%20L-38.11,88.0%20L-57.16,77.0%20L-57.16,55.0Z'/%3E%3Cpath%20d='M0.0,44.0%20L19.05,55.0%20L19.05,77.0%20L0.0,88.0%20L-19.05,77.0%20L-19.05,55.0Z'/%3E%3Cpath%20d='M38.11,44.0%20L57.16,55.0%20L57.16,77.0%20L38.11,88.0%20L19.05,77.0%20L19.05,55.0Z'/%3E%3C/g%3E%3C/svg%3E") repeat;
+  background-size: 76.21px 132px;
+  animation: heroHex var(--hero-hex-speed) linear infinite;
+  will-change: transform;
+}
+
+/* EFFECT: bees — JS-driven (see initHeroBees in js/main.js). The bees wander
+   and gently chase the cursor when it's over the hero. Number of bees, speed
+   and cursor-attraction are set on .hero-brand via data-bee-count /
+   data-bee-speed / data-bee-follow. This CSS only defines how ONE bee looks;
+   JS creates the right number, sizes them, and positions them via transform.
+   To recolour the bees, edit the fills inside the .bee data: URI below. */
+/* [data-hero-bg*="bees"] matches both "bees" and the combined "garden-bees". */
+.hero-brand[data-hero-bg*="bees"] .hero-fx-bees { display: block; }
+.hero-fx-bees { position: absolute; inset: 0; z-index: 3; } /* above the garden scene */
+.hero-fx-bees .bee {
+  position: absolute; top: 0; left: 0;      /* JS moves each bee with transform */
+  width: 40px; height: 28px; opacity: 0.9;
+  transform-origin: 50% 50%;
+  background: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2046%2032'%3E%3Cellipse%20cx='19'%20cy='9'%20rx='9'%20ry='6'%20fill='%23ffffff'%20fill-opacity='0.55'/%3E%3Cellipse%20cx='26'%20cy='9'%20rx='7'%20ry='5'%20fill='%23ffffff'%20fill-opacity='0.45'/%3E%3CclipPath%20id='b'%3E%3Cellipse%20cx='22'%20cy='19'%20rx='13'%20ry='9'/%3E%3C/clipPath%3E%3Cg%20clip-path='url(%23b)'%3E%3Crect%20x='9'%20y='10'%20width='27'%20height='18'%20fill='%23E0A63A'/%3E%3Crect%20x='15'%20y='10'%20width='3.6'%20height='18'%20fill='%231F2A15'/%3E%3Crect%20x='22'%20y='10'%20width='3.6'%20height='18'%20fill='%231F2A15'/%3E%3Crect%20x='29'%20y='10'%20width='3.6'%20height='18'%20fill='%231F2A15'/%3E%3C/g%3E%3Ccircle%20cx='36'%20cy='19'%20r='4.6'%20fill='%231F2A15'/%3E%3Cpath%20d='M38,15%20q2.5,-3.5%204.5,-3'%20stroke='%231F2A15'%20stroke-width='1'%20fill='none'%20stroke-linecap='round'/%3E%3Cpath%20d='M39,16.5%20q2.5,-1.8%204.5,-1'%20stroke='%231F2A15'%20stroke-width='1'%20fill='none'%20stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / contain;
+  will-change: transform;
+}
+
+/* EFFECT: garden — a wildflower meadow along the bottom with a skep beehive in
+   each bottom corner and a warbler (logo bird) perched on top, facing inward.
+   Static and edge-anchored, so it frames the hero without touching the centre.
+   Tweak: hive size via --garden-hive; meadow height via --garden-meadow-h. */
+/* [data-hero-bg*="garden"] matches both "garden" and the combined "garden-bees". */
+.hero-brand[data-hero-bg*="garden"] { --garden-hive: clamp(92px, 12vw, 168px); --garden-meadow-h: clamp(72px, 10vw, 116px); }
+.hero-brand[data-hero-bg*="garden"] .hero-fx-garden { display: block; }
+/* On narrow screens the hero is tall and the 21+ note would reach the garden,
+   so lift the content above it. Wider screens have the headroom already. */
+@media (max-width: 760px) {
+  .hero-brand[data-hero-bg*="garden"] > .hero-brand-inner { padding-bottom: clamp(82px, 22vw, 108px); }
+}
+.hero-fx-garden { position: absolute; inset: 0; }
+.garden-meadow {
+  position: absolute; left: 0; right: 0; bottom: 0; height: var(--garden-meadow-h);
+  background: url("../assets/meadow.svg") repeat-x bottom center;
+  background-size: auto 100%;
+}
+.garden-hive { position: absolute; bottom: 0; width: var(--garden-hive); line-height: 0; z-index: 1; }
+.garden-hive--left  { left:  clamp(-8px, 1.5vw, 34px); }
+.garden-hive--right { right: clamp(-8px, 1.5vw, 34px); transform: scaleX(-1); }
+.garden-cluster { display: block; width: 100%; height: auto; }
+
+@keyframes heroGlow {
+  0%, 100% { transform: translate3d(-1.5%, 1%, 0)  scale(1.04); opacity: 0.75; }
+  50%      { transform: translate3d(1.5%, -2%, 0)  scale(1.14); opacity: 1;    }
+}
+@keyframes heroMotes {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(0, -300px, 0); } /* one tile → seamless loop */
+}
+@keyframes heroHex {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(0, -132px, 0); } /* one tile → seamless loop */
+}
+/* (Bees are animated in JS, not with keyframes — see initHeroBees.) */
+
+/* Battery saver: JS adds .is-paused when the hero scrolls off-screen.
+   (The JS bee loop pauses itself off-screen / when the tab is hidden.) */
+.hero-anim.is-paused .hero-anim__glow,
+.hero-anim.is-paused .hero-anim__motes,
+.hero-anim.is-paused .hero-anim__hex { animation-play-state: paused; }
+
+/* Accessibility: reduced-motion users fall back to the static background. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-brand[data-hero-bg]:not([data-hero-bg="static"]) .hero-anim { display: none; }
+}
+
+/* ============================================================
+   Hero (legacy split — kept for other layouts)
+   ============================================================ */
+.hero { position: relative; overflow: hidden; }
+.hero-grid {
+  display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center; padding-block: clamp(2.5rem, 6vw, 5.5rem);
+}
+.hero-copy h1 { margin-bottom: 0.4em; }
+.hero-copy .lede { margin-bottom: 1.8rem; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+.hero-note { margin-top: 1.6rem; font-size: 0.85rem; color: var(--ink-soft); display: flex; align-items: center; gap: 0.5rem; }
+.hero-art {
+  position: relative; aspect-ratio: 4/5; border-radius: 22px; overflow: hidden;
+  box-shadow: var(--shadow); background: linear-gradient(160deg, var(--amber-glow), var(--honey) 45%, var(--honey-deep));
+}
+@media (max-width: 780px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-art { aspect-ratio: 16/12; order: -1; }
+}
+
+/* Decorative "pour" glass illustration lives in SVG; this frames it */
+.hero-art svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* ============================================================
+   Cards / product grid
+   ============================================================ */
+.grid { display: grid; gap: clamp(1.2rem, 3vw, 2rem); }
+.grid--3 { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.grid--2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+
+.product-card {
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; display: flex; flex-direction: column;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.product-thumb { aspect-ratio: 4/5; position: relative; overflow: hidden; }
+.product-thumb svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.product-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.product-body { padding: 1.1rem 1.25rem 1.35rem; display: flex; flex-direction: column; flex: 1; }
+.product-body h3 { margin-bottom: 0.2rem; }
+.product-style { font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--honey-deep); font-weight: 600; margin-bottom: 0.5rem; }
+.product-char { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 1rem; }
+.product-meta { display: flex; align-items: center; justify-content: space-between; margin-top: auto; gap: 0.75rem; }
+.product-price { font-family: var(--serif); font-size: 1.3rem; }
+.badge {
+  display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; padding: 0.25em 0.7em; border-radius: 100px;
+}
+.badge--stock { background: rgba(168,181,49,0.2); color: var(--warbler-deep); }
+.badge--limited { background: rgba(232,163,61,0.22); color: var(--honey-deep); }
+.badge--soldout { background: rgba(90,81,71,0.15); color: var(--ink-soft); }
+.badge--soon { background: rgba(90,81,71,0.12); color: var(--ink-soft); }
+
+/* Placeholder flag used anywhere real business facts are still needed */
+.ph {
+  background: repeating-linear-gradient(45deg, rgba(180,71,43,0.08), rgba(180,71,43,0.08) 8px, rgba(180,71,43,0.14) 8px, rgba(180,71,43,0.14) 16px);
+  border: 1px dashed rgba(180,71,43,0.5); border-radius: 6px; padding: 0.05em 0.4em;
+  font-size: 0.85em; color: var(--danger); font-style: normal; white-space: nowrap;
+}
+.ph-note {
+  border-left: 3px solid var(--danger); background: rgba(180,71,43,0.06);
+  padding: 0.75rem 1rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.9rem; color: var(--ink-soft); margin: 1rem 0;
+}
+.ph-note strong { color: var(--danger); }
+
+/* ============================================================
+   Feature rows / about
+   ============================================================ */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 5vw, 4rem); align-items: center; }
+.split--reverse .split-art { order: 2; }
+@media (max-width: 780px) { .split { grid-template-columns: 1fr; } .split--reverse .split-art { order: 0; } }
+.split-art { aspect-ratio: 5/4; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-soft); position: relative; background: var(--cream-2); }
+.split-art svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.feature-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+.feature { }
+.feature .ficon { width: 44px; height: 44px; color: var(--honey-deep); margin-bottom: 0.75rem; }
+.feature h3 { font-size: 1.2rem; }
+.feature p { color: var(--ink-soft); font-size: 0.96rem; margin: 0; }
+
+/* Story teaser */
+.teaser { display: grid; grid-template-columns: 1fr; gap: 1rem; max-width: 62ch; }
+
+/* ============================================================
+   Forms
+   ============================================================ */
+.field { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.1rem; }
+.field label { font-weight: 600; font-size: 0.92rem; }
+.field .req { color: var(--danger); }
+.field input, .field select, .field textarea {
+  font-family: var(--sans); font-size: 1rem; color: var(--ink);
+  padding: 0.7em 0.85em; border: 1.5px solid var(--line); border-radius: var(--radius-sm);
+  background: var(--white); transition: border-color 0.2s, box-shadow 0.2s;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; border-color: var(--warbler-deep); box-shadow: 0 0 0 3px rgba(201,214,75,0.25);
+}
+.field textarea { resize: vertical; min-height: 130px; }
+.field .hint { font-size: 0.82rem; color: var(--ink-soft); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+.form-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(1.3rem, 4vw, 2.2rem); box-shadow: var(--shadow-soft); }
+.check { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.92rem; }
+.check input { margin-top: 0.25rem; width: 18px; height: 18px; accent-color: var(--warbler-deep); flex: none; }
+.form-status { margin-top: 1rem; padding: 0.85rem 1rem; border-radius: var(--radius-sm); font-size: 0.92rem; display: none; }
+.form-status.show { display: block; }
+.form-status.ok { background: rgba(168,181,49,0.18); color: var(--warbler-deep); }
+.form-status.err { background: rgba(180,71,43,0.12); color: var(--danger); }
+
+/* Inline mailing-list strip */
+.newsletter { background: var(--honey); color: var(--ink); border-radius: 22px; padding: clamp(1.6rem, 5vw, 3rem); }
+.newsletter-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: center; }
+@media (max-width: 720px) { .newsletter-grid { grid-template-columns: 1fr; } }
+.newsletter h2 { color: var(--ink); }
+.newsletter form { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.newsletter input {
+  flex: 1 1 220px; padding: 0.8em 1em; border-radius: 100px; border: 1.5px solid rgba(43,38,32,0.2);
+  background: var(--cream); font-size: 1rem; font-family: var(--sans);
+}
+.newsletter input:focus { outline: none; border-color: var(--ink); }
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.site-footer { background: var(--forest-deep); color: var(--cream); padding-block: clamp(2.5rem, 5vw, 4rem) 2rem; }
+.footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; }
+@media (max-width: 720px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 460px) { .footer-grid { grid-template-columns: 1fr; } }
+.site-footer .brand { color: var(--cream); }
+.site-footer p { color: rgba(251,245,233,0.7); font-size: 0.92rem; }
+.footer-col h4 { color: var(--amber-glow); font-family: var(--sans); font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; }
+.footer-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+.footer-col a { color: rgba(251,245,233,0.85); text-decoration: none; font-size: 0.95rem; }
+.footer-col a:hover { color: var(--amber-glow); }
+.footer-bottom {
+  margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(251,245,233,0.15);
+  display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: center; justify-content: space-between;
+  font-size: 0.85rem; color: rgba(251,245,233,0.6);
+}
+.footer-21 {
+  display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 600; color: var(--amber-glow);
+  border: 1px solid rgba(246,200,104,0.4); border-radius: 100px; padding: 0.35em 0.9em;
+}
+.social { display: flex; gap: 0.75rem; }
+.social a { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: rgba(251,245,233,0.08); color: var(--cream); }
+.social a:hover { background: var(--honey); color: var(--ink); }
+
+/* ============================================================
+   Age gate (modal)
+   ============================================================ */
+.agegate {
+  position: fixed; inset: 0; z-index: 200; padding: 1.5rem;
+  /* Flex + overflow so a tall card (e.g. the checkout form) can scroll instead
+     of overflowing off-screen. margin:auto on the card centers it when it fits
+     and collapses to the top when it doesn't, so nothing gets cut off. */
+  display: flex; justify-content: center; align-items: flex-start; overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: radial-gradient(circle at 50% 35%, rgba(46,61,32,0.95), rgba(31,42,21,0.98));
+  backdrop-filter: blur(4px);
+}
+.agegate[hidden] { display: none; }
+.agegate-card {
+  background: var(--cream); border-radius: 20px; max-width: 440px; width: 100%;
+  margin: auto; flex: none;
+  padding: clamp(1.6rem, 5vw, 2.6rem); text-align: center; box-shadow: var(--shadow);
+  animation: rise 0.4s var(--ease);
+}
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } }
+.agegate svg.mark { width: 56px; height: 56px; margin: 0 auto 0.5rem; color: var(--honey-deep); }
+.agegate h2 { font-size: 1.7rem; }
+.agegate p { color: var(--ink-soft); font-size: 0.95rem; }
+.agegate .btn { margin-top: 0.5rem; }
+.agegate .gate-actions { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.2rem; }
+.agegate .decline { background: none; border: none; color: var(--ink-soft); cursor: pointer; text-decoration: underline; font-size: 0.9rem; font-family: var(--sans); }
+.agegate .fineprint { font-size: 0.78rem; margin-top: 1rem; }
+.agegate .gate-deny { display: none; }
+.agegate.denied .gate-welcome { display: none; }
+.agegate.denied .gate-deny { display: block; }
+
+/* ============================================================
+   Cart drawer
+   ============================================================ */
+.cart-drawer {
+  position: fixed; top: 0; right: 0; height: 100dvh; width: min(420px, 92vw); z-index: 150;
+  background: var(--cream); box-shadow: -20px 0 50px -20px rgba(43,38,32,0.4);
+  transform: translateX(100%); transition: transform 0.35s var(--ease);
+  display: flex; flex-direction: column;
+}
+.cart-drawer.open { transform: translateX(0); }
+.cart-overlay { position: fixed; inset: 0; background: rgba(43,38,32,0.45); z-index: 140; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.cart-overlay.open { opacity: 1; pointer-events: auto; }
+.cart-head { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem var(--gap); border-bottom: 1px solid var(--line); }
+.cart-head h3 { margin: 0; }
+.cart-close { background: none; border: none; cursor: pointer; color: var(--ink); padding: 0.25rem; }
+.cart-items { flex: 1; overflow-y: auto; padding: 1rem var(--gap); }
+.cart-empty { text-align: center; color: var(--ink-soft); padding: 3rem 1rem; }
+.cart-line { display: grid; grid-template-columns: 56px 1fr auto; gap: 0.85rem; align-items: center; padding: 0.85rem 0; border-bottom: 1px solid var(--line); }
+.cart-line .cart-thumb { width: 56px; height: 68px; border-radius: 8px; overflow: hidden; background: var(--cream-2); }
+.cart-line .cart-thumb svg { width: 100%; height: 100%; }
+.cart-line .cart-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.cart-line .name { font-weight: 600; font-size: 0.95rem; }
+.cart-line .qty { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem; }
+.cart-line .qty button { width: 24px; height: 24px; border: 1px solid var(--line); background: var(--white); border-radius: 6px; cursor: pointer; font-size: 1rem; line-height: 1; color: var(--ink); }
+.cart-line .price { font-family: var(--serif); }
+.cart-line .remove { background: none; border: none; color: var(--ink-soft); cursor: pointer; font-size: 0.8rem; text-decoration: underline; }
+.cart-foot { border-top: 1px solid var(--line); padding: 1.25rem var(--gap); }
+.cart-total { display: flex; justify-content: space-between; font-family: var(--serif); font-size: 1.25rem; margin-bottom: 0.5rem; }
+.cart-ship-note { font-size: 0.82rem; color: var(--ink-soft); display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+.cart-ship-note svg { flex: none; color: var(--honey-deep); }
+
+/* ============================================================
+   Product detail
+   ============================================================ */
+.pdp { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
+@media (max-width: 820px) { .pdp { grid-template-columns: 1fr; } }
+.pdp-media { position: sticky; top: 90px; aspect-ratio: 4/5; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); }
+@media (max-width: 820px) { .pdp-media { position: static; } }
+.pdp-media svg { width: 100%; height: 100%; }
+.pdp h1 { margin-bottom: 0.15em; }
+.pdp .product-style { font-size: 0.85rem; }
+.spec-list { list-style: none; margin: 1.5rem 0; padding: 0; border-top: 1px solid var(--line); }
+.spec-list li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.7rem 0; border-bottom: 1px solid var(--line); font-size: 0.95rem; }
+.spec-list dt, .spec-list .k { color: var(--ink-soft); font-weight: 600; }
+.spec-list .v { text-align: right; }
+.tasting { background: var(--cream-2); border-radius: var(--radius); padding: 1.25rem 1.4rem; margin: 1.5rem 0; }
+.tasting h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+.buy-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 1.5rem 0 0.75rem; }
+.qty-picker { display: inline-flex; align-items: center; border: 1.5px solid var(--line); border-radius: 100px; overflow: hidden; }
+.qty-picker button { width: 42px; height: 46px; border: none; background: var(--white); cursor: pointer; font-size: 1.2rem; color: var(--ink); }
+.qty-picker button:hover { background: var(--cream-2); }
+.qty-picker input { width: 44px; text-align: center; border: none; font-size: 1rem; font-family: var(--sans); background: var(--white); }
+.ship-eligibility { font-size: 0.88rem; color: var(--ink-soft); display: flex; gap: 0.5rem; align-items: flex-start; margin-top: 0.5rem; }
+.ship-eligibility svg { flex: none; color: var(--honey-deep); margin-top: 2px; }
+
+/* Checkout summary + state message */
+.checkout-summary { margin: 0 0 1rem; }
+.co-line { display: flex; justify-content: space-between; gap: 1rem; padding: 0.4rem 0; font-size: 0.95rem; border-bottom: 1px solid var(--line); }
+.co-total { font-family: var(--serif); font-size: 1.15rem; border-bottom: none; padding-top: 0.6rem; }
+.co-state-msg { font-size: 0.85rem; margin-top: 0.5rem; display: none; }
+.co-state-msg.show { display: block; }
+.co-state-msg.err { color: var(--danger); }
+.co-state-msg.ok { color: var(--warbler-deep); }
+#checkout .agegate-card { position: relative; }
+
+/* Breadcrumb */
+.crumbs { font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 1.25rem; }
+.crumbs a { color: var(--ink-soft); text-decoration: none; }
+.crumbs a:hover { color: var(--honey-deep); }
+
+/* ============================================================
+   Misc
+   ============================================================ */
+.pagehead { padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 3vw, 2.5rem); background: var(--cream-2); border-bottom: 1px solid var(--line); }
+.divider-bird { display: flex; align-items: center; gap: 1rem; margin: 0 auto; max-width: 320px; }
+.divider-bird::before, .divider-bird::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.divider-bird svg { width: 26px; height: 26px; color: var(--honey); }
+.divider-bird img { width: 44px; height: auto; flex: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+.skip-link { position: absolute; left: -999px; top: 0; background: var(--ink); color: var(--cream); padding: 0.6rem 1rem; z-index: 300; border-radius: 0 0 8px 0; }
+.skip-link:focus { left: 0; }
+
+/* ---------- Find Us ---------- */
+.map-frame { aspect-ratio: 16/10; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-soft); position: relative; background: var(--cream-2); }
+.map-frame svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.map-pin { position: absolute; display: grid; place-items: center; transform: translate(-50%, -100%); color: var(--danger); }
+.stockist-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
+.stockist {
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--radius-sm);
+  padding: 1rem 1.15rem; display: flex; justify-content: space-between; gap: 1rem; align-items: center; flex-wrap: wrap;
+}
+.stockist .s-name { font-weight: 600; }
+.stockist .s-meta { color: var(--ink-soft); font-size: 0.9rem; }
+.stockist .s-tag { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--honey-deep); }
+.hours-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.25rem 1.4rem; }
+.hours-card dl { display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 1.5rem; margin: 0; }
+.hours-card dt { font-weight: 600; }
+.hours-card dd { margin: 0; text-align: right; color: var(--ink-soft); }
+
+/* ---------- Events ---------- */
+.event-list { display: grid; gap: 1rem; }
+.event {
+  display: grid; grid-template-columns: 92px 1fr; gap: 1.25rem; align-items: center;
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.1rem 1.3rem;
+}
+.event-date {
+  text-align: center; background: var(--cream-2); border-radius: var(--radius-sm); padding: 0.6rem 0.4rem; line-height: 1.1;
+}
+.event-date .m { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--honey-deep); }
+.event-date .d { font-family: var(--serif); font-size: 1.7rem; }
+.event h3 { margin: 0 0 0.25rem; font-size: 1.2rem; }
+.event p { margin: 0; color: var(--ink-soft); font-size: 0.95rem; }
+.event .e-tag { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--warbler-deep); }
+@media (max-width: 480px) { .event { grid-template-columns: 1fr; } .event-date { display: inline-flex; gap: 0.4rem; align-items: baseline; width: fit-content; } }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+/* ============================================================
+   Mural (guestbook.html)
+   The mural is one shared board: a 12-column CSS grid of square
+   cells. Visitors drag out a rectangular patch, draw/sign it, and
+   submit for approval. Regions, the live drag-selection rectangle,
+   flags and thumbnails are all created by js/mural.js — every
+   selector below is a contract with that script, so keep names.
+   ============================================================ */
+
+/* --- Board frame + grid --------------------------------------- */
+.mural-frame {
+  background:
+    radial-gradient(circle at 50% 30%, #3d4f27 0%, var(--forest) 55%, var(--forest-deep) 100%);
+  border-radius: 20px;
+  padding: clamp(14px, 2vw, 26px);
+  box-shadow: inset 0 0 60px rgba(0,0,0,0.25);
+}
+.mural-board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  /* JS sets grid-auto-rows in px so each cell is square */
+  gap: 0;                 /* seamless — patches sit flush, one continuous wall */
+  min-height: 380px;
+  touch-action: none;
+  border-radius: 10px;
+  overflow: hidden;
+  /* one continuous parchment surface; whisper-faint cell lines for claiming */
+  background-color: #FBF7EA;
+  background-image:
+    repeating-linear-gradient(to right,  rgba(41,48,30,0.06) 0 1px, transparent 1px 100%),
+    repeating-linear-gradient(to bottom, rgba(41,48,30,0.06) 0 1px, transparent 1px 100%);
+  background-size: calc(100% / 12) 100%, 100% var(--mural-cell, 40px);
+}
+
+/* --- A placed / claimed region -------------------------------- */
+.mural-region {
+  /* JS positions each region via inline grid-area. No tile chrome — patches
+     are transparent layers on the shared parchment, so the mural reads as
+     ONE continuous painting. Later array entries stack on top; the admin can
+     reorder with Bring forward / Send back. pointer-events off so new claims
+     can start on top of existing art (the flag button opts back in). */
+  position: relative;
+  overflow: hidden;
+  min-width: 0; text-align: center;
+  pointer-events: none;
+}
+.mural-region img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mural-region .mural-caption {
+  position: absolute; left: 0; right: 0; bottom: 2px;
+  font-family: var(--script); font-weight: 600;
+  color: var(--forest); font-size: 0.7rem; line-height: 1.1;
+  padding: 0 4px; overflow-wrap: anywhere;
+}
+.mural-region--text {
+  display: flex; align-items: center; justify-content: center; padding: 6px;
+}
+.mural-region--text .mural-text {
+  font-family: var(--script); font-weight: 600;
+  font-size: clamp(0.9rem, 1.4vw, 1.3rem);
+  color: var(--forest); line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+.mural-region .mural-name { display: block; font-size: 0.72em; color: var(--ink-soft); }
+
+/* In-review (pending) — shown ONLY to its owner and to the admin (JS skips
+   rendering it for everyone else); art still must never render publicly */
+.mural-region--pending {
+  display: flex; align-items: center; justify-content: center;
+  background: repeating-linear-gradient(45deg,
+    rgba(224,166,58,0.16) 0 8px, transparent 8px 16px);
+  outline: 2px dashed var(--honey); outline-offset: -2px;
+}
+.mural-region--pending img,
+.mural-region--pending .mural-text,
+.mural-region--pending .mural-caption { display: none; }
+.mural-reserved-label {
+  font-size: 0.55rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--honey-deep);
+}
+
+/* Visitor's own approved patch, admin bounds, and flagged cue */
+.mural-region--mine { outline: 2px solid var(--honey); outline-offset: -2px; }
+.mural-region--adminview { outline: 1px dashed rgba(41,48,30,0.3); outline-offset: -1px; }
+.mural-region--flagged { outline: 2px solid var(--danger); outline-offset: -2px; }
+
+/* --- Live drag selection (grid child inserted by JS) ---------- */
+.mural-select {
+  background: rgba(224,166,58,0.25);
+  border: 2px dashed var(--honey);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+/* --- Report flag button (JS drops in the SVG glyph) ----------- */
+.mural-flag {
+  position: absolute; top: 4px; right: 4px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #FBF7EA; border: 1px solid var(--line);
+  display: grid; place-items: center;
+  cursor: pointer; opacity: 0.65; padding: 0;
+  color: var(--ink-soft);
+  pointer-events: auto; /* regions are pointer-transparent; the flag opts back in */
+}
+.mural-flag:hover, .mural-flag:focus-visible { opacity: 1; }
+.mural-flag svg { width: 12px; height: 12px; display: block; }
+
+/* --- Editor card ---------------------------------------------- */
+.mural-editor-where { color: var(--ink-soft); font-size: 0.9rem; margin: 0.25rem 0 0.9rem; }
+.mural-canvas-wrap { border: 1.5px solid var(--line); border-radius: 14px; background: #FBF7EA; overflow: hidden; }
+#mural-canvas { display: block; width: 100%; height: auto; touch-action: none; cursor: crosshair; }
+.mural-tools { display: flex; align-items: center; flex-wrap: wrap; gap: 0.55rem; margin: 0.85rem 0 1rem; }
+.mural-swatch {
+  width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
+  border: 2px solid var(--white); box-shadow: 0 0 0 1.5px var(--line);
+}
+.mural-swatch.active { box-shadow: 0 0 0 2.5px var(--forest); }
+.mural-size {
+  width: 34px; height: 34px; border-radius: 10px; cursor: pointer;
+  border: 1.5px solid var(--line); background: var(--white);
+  display: grid; place-items: center;
+}
+.mural-size i { display: block; border-radius: 50%; background: var(--ink); }
+.mural-size.active { border-color: var(--forest); box-shadow: 0 0 0 1px var(--forest); }
+.mural-tool-sep { width: 1px; height: 22px; background: var(--line); }
+.mural-tool-btn { padding: 0.4em 1em; font-size: 0.85rem; }
+
+/* --- Admin moderation cards ----------------------------------- */
+.mural-admin-card {
+  background: var(--white); border: 1px solid var(--line); border-radius: 14px;
+  padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem;
+}
+.mural-admin-thumb { background: #FBF7EA; border-radius: 10px; border: 1px solid var(--line); overflow: hidden; }
+.mural-admin-thumb img { display: block; width: 100%; height: auto; }
+.mural-admin-thumb--sign {
+  display: grid; place-items: center; min-height: 90px; padding: 0.75rem;
+  font-family: var(--script); font-weight: 600; font-size: 1.15rem; color: var(--forest);
+}
+.mural-admin-meta { font-size: 0.9rem; color: var(--ink); }
+.mural-admin-meta small { color: var(--ink-soft); }
+.mural-admin-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.mural-admin-actions .btn { padding: 0.5em 1.1em; font-size: 0.88rem; }
+
+@media (max-width: 700px) {
+  .mural-frame { padding: clamp(10px, 3vw, 16px); }
+  .mural-reserved-label { font-size: 0.48rem; letter-spacing: 0.05em; }
+}
