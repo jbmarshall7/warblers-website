@@ -264,6 +264,25 @@
     var stateMsg = $("#co-state-msg");
     var allowed = window.WARBLERS_ALLOWED_STATES || [];
 
+    /* fulfillment: ship (CT only) or local pickup in Newtown */
+    var shipFields = $("#co-ship-fields"), pickupInfo = $("#co-pickup-info");
+    function method() {
+      var r = modal.querySelector('input[name="co-method"]:checked');
+      return r ? r.value : "ship";
+    }
+    function syncMethod() {
+      var pickup = method() === "pickup";
+      if (shipFields) shipFields.hidden = pickup;
+      if (pickupInfo) pickupInfo.hidden = !pickup;
+      var addr = $("#co-address");
+      if (addr) addr.required = !pickup;
+      if (sel) sel.required = !pickup;
+    }
+    $$('input[name="co-method"]', modal).forEach(function (r) {
+      r.addEventListener("change", syncMethod);
+    });
+    syncMethod();
+
     function checkState() {
       var v = sel ? sel.value : "";
       if (!v) { stateMsg.className = "co-state-msg"; stateMsg.textContent = ""; return true; }
@@ -282,17 +301,22 @@
     if (form) form.addEventListener("submit", function (e) {
       e.preventDefault();
       var status = $("#checkout-status");
-      // no PO box
-      var addr = ($("#co-address") ? $("#co-address").value : "").toLowerCase();
-      if (/p\.?\s*o\.?\s*box|post office box/.test(addr)) {
-        status.className = "form-status err show";
-        status.textContent = "We can’t ship mead to a PO box — please use a street address (adult signature required on delivery).";
-        return;
-      }
-      if (!checkState()) {
-        status.className = "form-status err show";
-        status.textContent = "Please choose a shipping destination we currently serve.";
-        return;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      var pickup = method() === "pickup";
+
+      if (!pickup) {
+        // shipping-only rules: no PO boxes, allowed-state check
+        var addr = ($("#co-address") ? $("#co-address").value : "").toLowerCase();
+        if (/p\.?\s*o\.?\s*box|post office box/.test(addr)) {
+          status.className = "form-status err show";
+          status.textContent = "We can’t ship mead to a PO box — please use a street address (adult signature required on delivery).";
+          return;
+        }
+        if (!checkState()) {
+          status.className = "form-status err show";
+          status.textContent = "Please choose a shipping destination we currently serve — or switch to local pickup.";
+          return;
+        }
       }
       var age = $("#co-21");
       if (age && !age.checked) {
@@ -302,9 +326,13 @@
       }
       // success (demo)
       status.className = "form-status ok show";
-      status.innerHTML = "Thanks! This is a demonstration checkout — no payment was taken. " +
-        "A real order would confirm here, noting <strong>adult signature (21+) required on delivery</strong>. " +
-        "Payment, tax and carrier setup come with the chosen store platform.";
+      status.innerHTML = pickup
+        ? "Thanks! This is a demonstration checkout — no payment was taken. A real order would confirm here " +
+          "with pickup details for <strong>3 Simm Ln, Newtown, CT</strong> — we’d email you to arrange a time. " +
+          "<strong>Photo ID (21+) checked at pickup.</strong>"
+        : "Thanks! This is a demonstration checkout — no payment was taken. " +
+          "A real order would confirm here, noting <strong>adult signature (21+) required on delivery</strong>. " +
+          "Payment, tax and carrier setup come with the chosen store platform.";
       writeCart({}); // clear
       renderCheckoutSummary();
     });
@@ -490,7 +518,7 @@
               '<button class="btn" data-add="' + p.id + '" data-qty-source="pdp-qty">Add to cart · ' + money(p.price) + '</button>'
             : '<button class="btn" disabled>' + a.label + '</button>') +
         '</div>' +
-        '<p class="ship-eligibility">' + infoIcon() + '<span>Ships behind age verification. <strong>Adult signature (21+) required on delivery.</strong> Shipping is limited to states we’re licensed to serve — you’ll see eligibility at checkout. No PO boxes.</span></p>' +
+        '<p class="ship-eligibility">' + infoIcon() + '<span>Ships within <strong>Connecticut</strong> — adult signature (21+) required on delivery, no PO boxes. Or choose <strong>free local pickup in Newtown, CT</strong> at checkout (photo ID, 21+).</span></p>' +
       '</div>';
 
     function row(k, v) { return '<li><span class="k">' + k + '</span><span class="v">' + v + '</span></li>'; }
@@ -542,7 +570,7 @@
         '<div class="cart-items"></div>' +
         '<div class="cart-foot">' +
           '<div class="cart-total"><span>Subtotal</span><span class="amount">$0.00</span></div>' +
-          '<div class="cart-ship-note">' + infoIcon() + '<span>Adult signature (21+) required on delivery. Shipping limited to states we’re licensed to serve — confirmed at checkout.</span></div>' +
+          '<div class="cart-ship-note">' + infoIcon() + '<span>We ship within Connecticut (adult signature 21+ on delivery) — or free local pickup in Newtown, CT.</span></div>' +
           '<button class="btn btn--block cart-checkout" disabled>Checkout</button>' +
         '</div>' +
       '</aside>' +
@@ -555,8 +583,17 @@
           '<div id="checkout-summary" class="checkout-summary"></div>' +
           '<form id="checkout-form" novalidate>' +
             '<div class="field"><label for="co-name">Name <span class="req">*</span></label><input id="co-name" required autocomplete="name"></div>' +
-            '<div class="field"><label for="co-address">Street address <span class="req">*</span></label><input id="co-address" required autocomplete="street-address"><span class="hint">Street address only — we can’t ship mead to PO boxes.</span></div>' +
-            '<div class="field"><label for="co-state">Shipping state <span class="req">*</span></label><select id="co-state" required></select><div id="co-state-msg" class="co-state-msg"></div></div>' +
+            '<div class="field"><label for="co-email">Email <span class="req">*</span></label><input id="co-email" type="email" required autocomplete="email"><span class="hint">For order updates — and to arrange a time if you choose pickup.</span></div>' +
+            '<fieldset class="co-fulfill">' +
+              '<legend>How would you like your mead?</legend>' +
+              '<label class="check"><input type="radio" name="co-method" value="ship" checked> Ship to my address <span class="co-fulfill-hint">(Connecticut only)</span></label>' +
+              '<label class="check"><input type="radio" name="co-method" value="pickup"> Local pickup in Newtown, CT <span class="co-fulfill-hint">(free)</span></label>' +
+            '</fieldset>' +
+            '<div id="co-ship-fields">' +
+              '<div class="field"><label for="co-address">Street address <span class="req">*</span></label><input id="co-address" required autocomplete="street-address"><span class="hint">Street address only — we can’t ship mead to PO boxes.</span></div>' +
+              '<div class="field"><label for="co-state">Shipping state <span class="req">*</span></label><select id="co-state" required></select><div id="co-state-msg" class="co-state-msg"></div></div>' +
+            '</div>' +
+            '<div id="co-pickup-info" class="co-pickup-info" hidden>Pickup is at <strong>3 Simm Ln, Newtown, CT</strong>. We’ll email you to arrange a time once your order is ready — bring a photo ID (21+ verified at pickup).</div>' +
             '<label class="check" style="margin:.5rem 0 1rem"><input type="checkbox" id="co-21" required> I confirm I am 21 years of age or older. <span class="req">*</span></label>' +
             '<button type="submit" class="btn btn--block">Place order</button>' +
             '<div id="checkout-status" class="form-status"></div>' +

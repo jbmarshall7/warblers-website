@@ -586,6 +586,17 @@ p { margin: 0 0 1rem; }
 .ship-eligibility { font-size: 0.88rem; color: var(--ink-soft); display: flex; gap: 0.5rem; align-items: flex-start; margin-top: 0.5rem; }
 .ship-eligibility svg { flex: none; color: var(--honey-deep); margin-top: 2px; }
 
+/* Checkout fulfillment choice (ship vs local pickup) */
+.co-fulfill { border: none; margin: 0.25rem 0 0.9rem; padding: 0; }
+.co-fulfill legend { font-weight: 600; font-size: 0.92rem; margin-bottom: 0.35rem; padding: 0; }
+.co-fulfill .check { display: flex; margin: 0.3rem 0; }
+.co-fulfill-hint { color: var(--ink-soft); font-size: 0.85rem; }
+.co-pickup-info {
+  background: var(--cream-2); border-radius: 10px;
+  padding: 0.8rem 1rem; margin: 0 0 0.9rem;
+  font-size: 0.92rem; line-height: 1.5;
+}
+
 /* Checkout summary + state message */
 .checkout-summary { margin: 0 0 1rem; }
 .co-line { display: flex; justify-content: space-between; gap: 1rem; padding: 0.4rem 0; font-size: 0.95rem; border-bottom: 1px solid var(--line); }
