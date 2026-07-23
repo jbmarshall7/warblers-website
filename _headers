@@ -21,3 +21,6 @@
 
 /admin.html
   X-Robots-Tag: noindex, nofollow
+
+/admin
+  X-Robots-Tag: noindex, nofollow

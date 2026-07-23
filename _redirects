@@ -1,0 +1,13 @@
+# Canonical clean URLs — the .html duplicates 301 here permanently.
+# Netlify serves /about from about.html natively, so only the
+# redirects are needed (query strings are preserved automatically).
+/index.html / 301!
+/about.html /about 301!
+/shop.html /shop 301!
+/product.html /product 301!
+/merch.html /merch 301!
+/find-us.html /find-us 301!
+/events.html /events 301!
+/guestbook.html /guestbook 301!
+/contact.html /contact 301!
+/admin.html /admin 301!

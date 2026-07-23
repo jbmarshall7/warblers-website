@@ -811,7 +811,7 @@
       var note = $("#mural-mode-note");
       if (note) note.innerHTML = "<strong>Shared wall.</strong> Everyone sees the same mural — " +
         "your patch appears for the whole flock once it&rsquo;s approved. " +
-        'Admins sign in at <a href="admin.html">the admin page</a>.';
+        'Admins sign in at <a href="/admin">the admin page</a>.';
       renderBoard(); // paint my local echoes immediately…
       RemoteStore.refresh().then(renderBoard)["catch"](function () {
         hint("Couldn't load the wall just now — check back in a moment.");

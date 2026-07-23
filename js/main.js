@@ -167,7 +167,7 @@
     if (!wrap) return;
     var ids = Object.keys(c);
     if (!ids.length) {
-      wrap.innerHTML = '<div class="cart-empty"><p>Your cart is empty.</p><p style="font-size:.9rem">Browse the <a href="shop.html">mead lineup</a> to get started.</p></div>';
+      wrap.innerHTML = '<div class="cart-empty"><p>Your cart is empty.</p><p style="font-size:.9rem">Browse the <a href="/shop">mead lineup</a> to get started.</p></div>';
     } else {
       wrap.innerHTML = ids.map(function (id) {
         var p = findProduct(id); if (!p) return "";
@@ -427,10 +427,10 @@
     var a = AVAIL[p.availability] || AVAIL.stock;
     var buyable = p.availability === "stock" || p.availability === "limited";
     return '<article class="product-card">' +
-      '<a class="product-thumb" href="product.html?id=' + p.id + '" aria-label="' + p.name + '">' + bottleSVG(p.hue) + '</a>' +
+      '<a class="product-thumb" href="/product?id=' + p.id + '" aria-label="' + p.name + '">' + bottleSVG(p.hue) + '</a>' +
       '<div class="product-body">' +
         '<div class="product-style">' + p.style + ' · ' + p.abv + '% ABV</div>' +
-        '<h3><a href="product.html?id=' + p.id + '" style="text-decoration:none;color:inherit">' + p.name + '</a></h3>' +
+        '<h3><a href="/product?id=' + p.id + '" style="text-decoration:none;color:inherit">' + p.name + '</a></h3>' +
         '<p class="product-char">' + p.character + '</p>' +
         '<div class="product-meta">' +
           '<span class="product-price">' + money(p.price) + '</span>' +
@@ -438,7 +438,7 @@
         '</div>' +
         (buyable
           ? '<button class="btn btn--block" data-add="' + p.id + '" style="margin-top:1rem">Add to cart</button>'
-          : '<a class="btn btn--ghost btn--block" href="product.html?id=' + p.id + '" style="margin-top:1rem">View details</a>') +
+          : '<a class="btn btn--ghost btn--block" href="/product?id=' + p.id + '" style="margin-top:1rem">View details</a>') +
       '</div>' +
     '</article>';
   }
@@ -497,7 +497,7 @@
     host.innerHTML =
       '<div class="pdp-media">' + bottleSVG(p.hue) + '</div>' +
       '<div class="pdp-info">' +
-        '<nav class="crumbs"><a href="shop.html">Shop</a> / ' + p.name + '</nav>' +
+        '<nav class="crumbs"><a href="/shop">Shop</a> / ' + p.name + '</nav>' +
         '<div class="product-style">' + p.style + ' · ' + p.abv + '% ABV</div>' +
         '<h1>' + p.name + '</h1>' +
         '<p class="lede">' + p.character + '</p>' +

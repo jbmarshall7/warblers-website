@@ -4,7 +4,7 @@
     {
       "name": "warblers-static",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4173"],
+      "runtimeArgs": ["dev-server.py"],
       "port": 4173
     }
   ]
